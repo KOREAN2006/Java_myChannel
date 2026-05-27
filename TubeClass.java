@@ -1,13 +1,13 @@
 public class TubeClass {
 	public static void main(String[] args) {
-		MyChannel myChannel[] = { null, null, null, null, null, null, null };
-		myChannel[0] = new MyChannel("PT", "ÆÊ³ª¹«", 20210730, Classy.CF_CLASSY);
-		myChannel[1] = new MyChannel("CF", "ClockFire", 20210804, Classy.CF_CLASSY);
-		myChannel[2] = new MyChannel("PR", "¸Æµ¿ÀüÆÄ¿ø", 20220511, Classy.PN_CLASSY);
-		myChannel[3] = new MyChannel("PN", "Çà¼º»ó¼º¿î", 20220710, Classy.PN_CLASSY);
-		myChannel[4] = new MyChannel("BK", "BMI KINGDOM", 20220720, Classy.CF_CLASSY);
-		myChannel[5] = new MyChannel("EC", "Escape", 20230101, Classy.EC_CLASSY);
-		myChannel[6] = new MyChannel("EN", "Entire", 20240229, Classy.EC_CLASSY);
+		MyChannel[] myChannel = new MyChannel[7];
+		myChannel[0] = new MyChannel("PT", "íŒœë‚˜ë¬´", new IntDate(20210730), Classy.CF_CLASSY);
+		myChannel[1] = new MyChannel("CF", "ClockFire", new IntDate(20210804), Classy.CF_CLASSY);
+		myChannel[2] = new MyChannel("PR", "ë§¥ë™ì „íŒŒì›", new IntDate(20220511), Classy.PN_CLASSY);
+		myChannel[3] = new MyChannel("PN", "í–‰ì„±ìƒì„±ìš´", new IntDate(20220710), Classy.PN_CLASSY);
+		myChannel[4] = new MyChannel("BK", "BMI KINGDOM", new IntDate(20220720), Classy.CF_CLASSY);
+		myChannel[5] = new MyChannel("EC", "Escape", new IntDate(20230101), Classy.EC_CLASSY);
+		myChannel[6] = new MyChannel("EN", "Entire", new IntDate(20240229), Classy.EC_CLASSY);
 		
 		for(MyChannel aMyChannel : myChannel) {
 			System.out.println(aMyChannel);
@@ -18,13 +18,13 @@ public class TubeClass {
 class MyChannel {
 	private String code;
 	private String name;
-	private Date birth;
+	private IntDate birth;
 	private Classy classy;
 	
-	public MyChannel(String code, String name, int birth, Classy classy) {
+	public MyChannel(String code, String name, IntDate birth, Classy classy) {
 		this.code = code;
 		this.name = name;
-		this.birth = new Date(birth);
+		this.birth = birth;
 		this.classy = classy;
 	}
 	
@@ -34,19 +34,19 @@ class MyChannel {
 	}
 }
 
-class Date {
+class IntDate {
 	private int year;
 	private int month;
 	private int day;
 	
 	@Override
 	public String toString() {
-		return year + "³â " + month + "¿ù " + day + "ÀÏ";
+		return year + "ë…„ " + month + "ì›” " + day + "ì¼";
 	}
 	
-	public Date(int date) {
-		year = Curring.curring(0, date / 10000, 3001, 0);
-		month = Curring.curring(0, date / 100 % 100, 13, 0);
+	public IntDate(int date) {
+		year = RangeCheck.rangeCheck(0, date / 10000, 3001, 0);
+		month = RangeCheck.rangeCheck(0, date / 100 % 100, 13, 0);
 		switch(month) {
 			case 1:
 			case 3:
@@ -55,28 +55,28 @@ class Date {
 			case 8:
 			case 10:
 			case 12:
-				day = Curring.curring(0, date % 100, 32, 0);
+				day = RangeCheck.rangeCheck(0, date % 100, 32, 0);
 				break;
 			case 4:
 			case 6:
 			case 9:
 			case 11:
-				day = Curring.curring(0, date % 100, 31, 0);
+				day = RangeCheck.rangeCheck(0, date % 100, 31, 0);
 				break;
 			case 2:
 				if(year % 400 == 0) {
-					day = Curring.curring(0, date % 100, 30, 0);
+					day = RangeCheck.rangeCheck(0, date % 100, 30, 0);
 					break;
 				}
 				if(year % 100 == 0) {
-					day = Curring.curring(0, date % 100, 29, 0);
+					day = RangeCheck.rangeCheck(0, date % 100, 29, 0);
 					break;
 				}
 				if(year % 4 == 0) {
-					day = Curring.curring(0, date % 100, 30, 0);
+					day = RangeCheck.rangeCheck(0, date % 100, 30, 0);
 					break;
 				}
-				day = Curring.curring(0, date % 100, 29, 0);
+				day = RangeCheck.rangeCheck(0, date % 100, 29, 0);
 				break;
 			default:
 				day = 0;
@@ -84,8 +84,8 @@ class Date {
 	}
 }
 
-class Curring {
-	public static int curring(int sOut, int num, int bOut, int err) {
+class RangeCheck {
+	public static int rangeCheck(int sOut, int num, int bOut, int err) {
 		return (num > sOut && num < bOut) ? num : err;
 	}
 }
